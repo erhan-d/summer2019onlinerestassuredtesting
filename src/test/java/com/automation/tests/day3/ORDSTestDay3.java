@@ -66,7 +66,7 @@ public class ORDSTestDay3 {
                 then().assertThat().statusCode(200).
                 and().assertThat().body("region_name", is("Europe")).
                 time(lessThan(10L), TimeUnit.SECONDS).
-                log().body(true);// log body in prety format.
+                log().body(true);// log body in pretty format.
 
     }
     @Test

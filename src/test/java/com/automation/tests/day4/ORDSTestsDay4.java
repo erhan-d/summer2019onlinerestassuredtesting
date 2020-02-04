@@ -1,6 +1,7 @@
 package com.automation.tests.day4;
 
 import com.automation.utilities.ConfigurationReader;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -44,7 +45,7 @@ public class ORDSTestsDay4 {
                 get("/employees").
                 then().
                 assertThat().
-                statusCode(200).
+                statusCode(200).contentType(ContentType.JSON).
                 time(lessThan(3L), TimeUnit.SECONDS).
                 log().all(true);//payload=body, and our body has JSON format
 
@@ -67,12 +68,11 @@ public class ORDSTestsDay4 {
         given().
                 accept(ContentType.JSON).
                 queryParam("q", "{\"country_id\":\"US\"}").
-                when().
+         when().
                 get("/countries").
-                then().
+        then().
                 assertThat().statusCode(200).
                 contentType(ContentType.JSON).
-
                 body("items[0].country_name", is("United States of America")).
                 log().all(true);
     }
@@ -99,14 +99,17 @@ public class ORDSTestsDay4 {
     @Test
     @DisplayName("Verify that payload contains only 25 countries")
     public void test4() {
-        List <?> countries = given().
+        Response response = given().
                 accept(ContentType.JSON).
                 when().
-                get("/countries").prettyPeek().
-                thenReturn().jsonPath().getList("items");
+                get("/countries");
+        JsonPath jsonPath = response.jsonPath();
+        List <?> count = jsonPath.getList("items");
+        System.out.println(count.size());
 
-        assertEquals(25, countries.size());
+        assertEquals(25, count.size());
     }
+
 
     /**
      * given path parameter is "/countries" and region id is 2
@@ -207,7 +210,8 @@ public class ORDSTestsDay4 {
      */
 
     @Test
-    @DisplayName("verify that body returns following salary information after sorting from higher to lower(after sorting it in descending order)")
+    @DisplayName("verify that body returns following salary information after sorting from higher " +
+            "to lower(after sorting it in descending order)")
     public void test8() {
         List <Integer> expectedSalaries = List.of(24000, 17000, 17000, 12008, 11000,
                 9000, 9000, 8200, 8200, 8000,
@@ -222,7 +226,7 @@ public class ORDSTestsDay4 {
 
         List <Integer> actualSalaries = response.jsonPath().getList("items.salary");
 
-        Collections.sort(actualSalaries, Collections.reverseOrder());
+        Collections.sort(actualSalaries,Collections.reverseOrder());
 
         System.out.println(actualSalaries);
 

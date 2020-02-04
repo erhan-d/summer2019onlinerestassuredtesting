@@ -47,8 +47,10 @@ public class ORDSTestsDay5 {
         for (int salary : salaries) {
             sum += salary;
         }
+        System.out.println("sum of salaries is :"+sum);
         //we are calculating average: salary sum/count
         int avg = sum / salaries.size();
+        System.out.println("avg salary is : "+avg);
 
         //we are asserting that average salary is grater than 5000
         assertTrue(avg > 5000, "ERROR: actually average salary is lower than 5000: "+avg);
