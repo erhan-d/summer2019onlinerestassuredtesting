@@ -35,6 +35,7 @@ public class PreschoolTests {
         baseURI = ConfigurationReader.getProperty("school.uri");
     }
 
+    //De-serialization Json to pojo class
     @Test
     @DisplayName("Get student with id 2633 and convert payload into POJO")
     public void test1(){
@@ -50,4 +51,32 @@ public class PreschoolTests {
         assertEquals("123456" ,student.getAdmissionNo());
         assertEquals("7925 Jones Branch Dr #3300", student.getContact().getPermanentAddress());
     }
+
+    @Test
+    @DisplayName("Get student with id 3024 and convert payload into POJO")
+    public void test2(){
+
+  Response response= given().
+          accept(ContentType.JSON).
+          pathParam("id", 3024).
+          when().get("/student/{id}").prettyPeek();
+
+  Student student=response.jsonPath().getObject("students[0]",Student.class);
+        System.out.println(student);
+
+    }
+
+    @Test
+    @DisplayName("Get student with id 2761 and convert payload into pojo")
+    public void test3(){
+       Response response=
+                 given().accept(ContentType.JSON)
+                .pathParam("id",2761)
+                .when().get("/student/{id}").prettyPeek();
+
+        Student student=response.jsonPath().getObject("students[0]",Student.class);
+        System.out.println(student);
+    }
+
+
 }

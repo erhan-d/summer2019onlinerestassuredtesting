@@ -49,7 +49,7 @@ public class CalendarificTestAPIKey {
      * And user verifies that meta.error_detail contains "Missing or invalid api credentials." message
      */
     @Test
-    @DisplayName("verifies that meta.error_detail contains \"Missing or invalid api credentials. message")
+    @DisplayName("verifies that user cannot access web service w/o valid API key")
     public void test1() {
         given().
                 accept(ContentType.JSON)
@@ -71,14 +71,15 @@ public class CalendarificTestAPIKey {
      * And user verifies that countries array is not empty
      */
     @Test
-    @DisplayName("verifies that meta.error_detail contains \"Missing or invalid api credentials. message")
+    @DisplayName("verifies that countries array is not empty")
     public void test2() {
         given().
                 accept(ContentType.JSON)
                 .queryParam("api_key", "ebe88078e981c84bedeb9e8a34ad927560e545f2")
-                .when()
+        .when()
                 .get("/countries").prettyPeek()
-                .then().statusCode(200)
+        .then()
+                .statusCode(200)
                 .statusLine(containsString("OK"))
                 .body("response.country_name", not(empty()));
 
@@ -105,20 +106,12 @@ public class CalendarificTestAPIKey {
                 .when().get("/holidays");
         //short way
         response.then().assertThat().statusCode(200).body("response.holidays", hasSize(11));
-  //List
-        List <Map <String, ?>> holidays = response.jsonPath().get("response.holidays");
+        //List
+        List <Map <String, ?> > holidays = response.jsonPath().get("response.holidays");
         assertEquals(11, holidays.size(), "Wrong number of holidays!");
     }
 
-    @Test
-    @DisplayName("verifies that number of national holidays in US is equals to 11")
-    public void test4() {
-        Response response = given().
-                accept(ContentType.JSON)
-                .when().get("");
 
-
-    }
 
 
 

@@ -52,7 +52,9 @@ public class OMDBTestAPIKey {
                     queryParam("apikey", "9f94d4d0").
                     when().
                     get();
-            response.then().assertThat().statusCode(200).body("Actors", containsString("Macaulay Culkin"));
+            response.then().assertThat().statusCode(200).
+                    body("Actors", containsString("Macaulay Culkin"));
+
             Map<String, Object> payload = response.getBody().as(Map.class);
             System.out.println(payload);
 

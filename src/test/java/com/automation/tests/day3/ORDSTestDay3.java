@@ -71,22 +71,23 @@ public class ORDSTestDay3 {
     }
     @Test
     public void test4() {
-        JsonPath json = given().accept("application/json").
-                        when().get("/employees").
-                        thenReturn().jsonPath();
-        String nameOfFirstEmployee = json.getString("items[0].first_name");
-        String nameofLastEmployee=json.getString("items[-1].first_name");
+       Response response = given().accept("application/json").
+                        when().get("/employees");
+
+        String nameOfFirstEmployee = response.jsonPath().getString("items[0].first_name");
+        String nameofLastEmployee=response.jsonPath().getString("items[-1].first_name");
 
         System.out.println("First employee name: " + nameOfFirstEmployee);
         System.out.println("Last employee name: " + nameofLastEmployee);
 // since firstEmployee it's a map(key-value pair,we can iterate through it by using Entry.
 // entry represent one-key=value pair
-        Map<String,?> firstEmployee=json.get("items[0]");
+        Map<String,?> firstEmployee=response.jsonPath().get("items[0]");
         System.out.println(firstEmployee);
         for(Map.Entry entry:firstEmployee.entrySet()){
             System.out.println("key: "+entry.getKey()+", value: "+entry.getValue());
         }
-        List <String> lastNames=json.get("items.last_name");
+        List <String> lastNames=response.jsonPath().get("items.last_name");
+
         for(String str:lastNames)
         System.out.println("Last name: "+str);
 

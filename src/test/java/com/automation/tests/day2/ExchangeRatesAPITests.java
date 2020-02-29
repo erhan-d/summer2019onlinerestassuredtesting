@@ -22,7 +22,7 @@ public class ExchangeRatesAPITests {
 
     @Test
     public void test2() {
-        Response response = given().get(baseURI + "latest");
+        Response response = given().get(baseURI + "latest").prettyPeek();
         //verify that content type is json
         assertEquals(200, response.getStatusCode());
         //verify that data is coming as json
@@ -51,9 +51,10 @@ public class ExchangeRatesAPITests {
         Response response = given().
                 baseUri(baseURI + "latest").
                 queryParam("base", "GBP").
-                get();
+                get().prettyPeek();
 
-        String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  //      String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String todaysDate=LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         System.out.println("Today's date: " + todaysDate);
 

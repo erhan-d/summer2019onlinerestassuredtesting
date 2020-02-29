@@ -33,6 +33,7 @@ public class SpartanTestsDay7 {
         baseURI = ConfigurationReader.getProperty("spartan.uri");
     }
 
+    //Serialization pojo to json
     @Test
     @DisplayName("Add new user by using extarnal JSON file ")
     public void test() {
@@ -45,6 +46,39 @@ public class SpartanTestsDay7 {
                 .post("/spartans").prettyPeek()
                 .then().assertThat().statusCode(201)
                 .body("success", is("A Spartan is Born!"));
+    }
+
+    @Test
+    @DisplayName("Add new user by using extarnal JSON file ")
+    public void test1_b() {
+
+        File file= new File(System.getProperty("user.dir")+"/spartan.json");
+
+        given().contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(file)
+                .when()
+                .post("/spartans").prettyPeek()
+                .then().assertThat().statusCode(201)
+                .body("success",is("A Spartan is Born!") );
+
+    }
+
+    @Test
+    @DisplayName("Add new user by using map ")
+    public void test2_a() {
+
+        Map<String, Object> spartan=new HashMap <>();
+
+                spartan.put("name","Holy");
+                spartan.put("gender","Male");
+                spartan.put("phone",4545577568L);
+         given().contentType(ContentType.JSON)
+                 .accept(ContentType.JSON)
+                 .body(spartan).
+         when().post("/spartans").prettyPeek().
+                 then().assertThat().statusCode(201).
+                 body("success",is("A Spartan is Born!"));
     }
 
     @Test
